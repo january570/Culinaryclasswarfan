@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culinary Class Wars: Season 2 Recipes</title>
+    <style>
+        :root { --primary: #1a1a1a; --bg: #f4f4f9; --text: #333; }
+        body { font-family: 'Aptos', sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: var(--text); }
+        nav { background-color: #111; padding: 15px 20px; display: flex; justify-content: center; gap: 20px; }
+        nav a { color: white; text-decoration: none; font-weight: bold; font-size: 1.1em; padding: 5px 15px; border-radius: 4px; }
+        header { background-color: var(--primary); color: white; text-align: center; padding: 40px 20px; }
+        header h1 { margin: 0; font-size: 2.5em; letter-spacing: 1px; }
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .search-container { text-align: center; margin-bottom: 30px; }
+        .search-bar { width: 100%; max-width: 400px; padding: 12px 20px; font-size: 1em; border: 1px solid #ccc; border-radius: 25px; outline: none; }
+        .filters { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 30px; }
+        .filter-btn { background: white; border: 1px solid #ccc; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .recipe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        
+        /* Non-clickable card styling */
+        .card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee; transition: none; }
+        img.card-img { width: 100%; height: 220px; object-fit: cover; display: block; border-bottom: 1px solid #eee; background-color: #e0e0e0; }
+        .card-content { padding: 20px; display: flex; flex-direction: column; }
+        .card-title { font-size: 1.3em; font-weight: bold; margin: 0 0 5px 0; }
+        .card-chef { color: #666; font-size: 0.9em; margin-bottom: 10px; font-style: italic; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75em; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; align-self: flex-start; }
+        .badge.black { background: #222; color: white; }
+        .badge.white { background: #fff; color: #222; border: 1px solid #ccc; }
+        .card-ep { font-size: 0.85em; font-weight: bold; color: #888; margin-top: 5px; border-top: 1px solid #f0f0f0; padding-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="chefs.html">Chef Directory</a>
+    </nav>
+
+    <header>
+        <h1>Culinary Class Wars S2</h1>
+        <p>Featured Dishes & Episode Guide</p>
+    </header>
+
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="recipeSearch" class="search-bar" placeholder="Search dish, chef, or episode..." onkeyup="searchRecipes()">
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterSelection('all')">Show All</button>
+            <button class="filter-btn" onclick="filterSelection('black-spoon')">Black Spoons</button>
+            <button class="filter-btn" onclick="filterSelection('white-spoon')">White Spoons</button>
+        </div>
+
+        <div id="roster-grid" class="recipe-grid"></div>
+    </div>
+
+    <script>
+        const recipeData = [
+            { name: "Choi Kang-rok", dish: "Sesame Tofu Soup", spoon: "white", ep: "Episode 12 (Finale)", dishImg: "images/tofu_soup.jpg" },
+            { name: "Lee Ha-sung", dish: "Deconstructed Sundaeguk", spoon: "black", ep: "Episode 12 (Finale)", dishImg: "images/sundae.jpg" },
+            { name: "Lee Jun", dish: "French-Style Quail", spoon: "white", ep: "Episode 4", dishImg: "images/leejun_quail.jpg" },
+            { name: "Choi Kang-rok", dish: "Braised Freshwater Eel", spoon: "white", ep: "Episode 4", dishImg: "images/eel.jpg" },
+            { name: "Lee Ha-sung", dish: "Spring Herb Porridge", spoon: "black", ep: "Episode 11", dishImg: "images/porridge.jpg" },
+            { name: "Lee Chan-yang", dish: "Rabbit and Rabbit Liver", spoon: "black", ep: "Episode 11", dishImg: "images/rabbit.jpg" },
+            { name: "Im Seong-keun", dish: "Traditional Beef Short Ribs", spoon: "white", ep: "Episode 4", dishImg: "images/ribs.jpg" },
+            { name: "Venerable Sunjae", dish: "Temple Vegetable Stir-fry", spoon: "white", ep: "Episode 4", dishImg: "images/stirfry.jpg" },
+            { name: "Hou Deok-juk", dish: "Buyong Blue Crab", spoon: "white", ep: "Episode 4", dishImg: "images/crab.jpg" },
+            { name: "Nara Yun", dish: "Pollack Hangover Soup", spoon: "black", ep: "Episode 4", dishImg: "images/pollack_soup.jpg" },
+            { name: "Son Jong-won", dish: "Champagne Custard & Caviar", spoon: "white", ep: "Episode 4", dishImg: "images/custard.jpg" },
+            { name: "Yoon Nam-no", dish: "Cod Milt Curry Butter", spoon: "black", ep: "Episode 4", dishImg: "images/cod_milt.jpg" }
+        ];
+
+        function renderCards() {
+            const grid = document.getElementById('roster-grid');
+            grid.innerHTML = recipeData.map(item => `
+                <div class="card recipe-item ${item.spoon}-spoon">
+                    <img src="${item.dishImg}" alt="${item.dish}" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">${item.dish}</h3>
+                        <div class="card-chef">By ${item.name}</div>
+                        <span class="badge ${item.spoon}">${item.spoon.toUpperCase()} SPOON</span>
+                        <div class="card-ep">CREATED IN: ${item.ep}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        renderCards();
+
+        function filterSelection(category) {
+            let cards = document.getElementsByClassName('recipe-item');
+            let btns = document.getElementsByClassName("filter-btn");
+            for (let btn of btns) { btn.classList.remove("active"); }
+            event.currentTarget.classList.add("active");
+
+            for (let i = 0; i < cards.length; i++) {
+                if (category === 'all' || cards[i].classList.contains(category + '-spoon')) {
+                    cards[i].style.display = "block";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        function searchRecipes() {
+            let input = document.getElementById('recipeSearch').value.toLowerCase();
+            let cards = document.getElementsByClassName('recipe-item');
+            for (let card of cards) {
+                card.style.display = card.innerText.toLowerCase().includes(input) ? "block" : "none";
+            }
+        }
+    </script>
+</body>
+</html>

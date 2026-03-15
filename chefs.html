@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chef Directory - Season 2 Full Roster</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #111; 
+            --bg: #f0f2f5; 
+            --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+            --retro-red: #ff4d4d;
+            --retro-gray: #bdc3c7;
+        }
+        
+        body { font-family: 'Aptos', sans-serif; margin: 0; padding: 0; background-color: var(--bg); color: #222; }
+        nav { background: #000; padding: 12px 20px; }
+        nav a { color: #fff; text-decoration: none; font-weight: bold; font-size: 0.85em; background: #333; padding: 6px 12px; border-radius: 4px; }
+        header { background: #fff; border-bottom: 1px solid #ddd; text-align: center; padding: 20px; }
+        header h1 { margin: 0; font-size: 1.6em; }
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
+        
+        .search-container { margin-bottom: 20px; display: flex; justify-content: center; }
+        .search-bar { width: 100%; max-width: 300px; padding: 12px 20px; border-radius: 20px; border: 1px solid #ccc; outline: none; font-size: 0.9em; }
+
+        /* THE 16-BIT PIXEL HEART */
+        .vote-container {
+            position: absolute; top: 10px; right: 10px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .vote-btn { 
+            background: none; border: none; cursor: pointer; 
+            width: 40px; height: 35px;
+            position: relative; display: flex; align-items: center; justify-content: center;
+            transition: transform 0.1s;
+        }
+
+        /* 3px block heart */
+        .pixel-heart {
+            width: 3px; height: 3px;
+            background: transparent;
+            box-shadow: 
+                3px 0 var(--retro-gray), 6px 0 var(--retro-gray), 12px 0 var(--retro-gray), 15px 0 var(--retro-gray),
+                0 3px var(--retro-gray), 3px 3px var(--retro-gray), 6px 3px var(--retro-gray), 9px 3px var(--retro-gray), 12px 3px var(--retro-gray), 15px 3px var(--retro-gray), 18px 3px var(--retro-gray),
+                0 6px var(--retro-gray), 3px 6px var(--retro-gray), 6px 6px var(--retro-gray), 9px 6px var(--retro-gray), 12px 6px var(--retro-gray), 15px 6px var(--retro-gray), 18px 6px var(--retro-gray),
+                3px 9px var(--retro-gray), 6px 9px var(--retro-gray), 9px 9px var(--retro-gray), 12px 9px var(--retro-gray), 15px 9px var(--retro-gray),
+                6px 12px var(--retro-gray), 9px 12px var(--retro-gray), 12px 12px var(--retro-gray),
+                9px 15px var(--retro-gray);
+            position: absolute; top: 5px; left: 10px;
+        }
+
+        .vote-btn.voted .pixel-heart {
+            box-shadow: 
+                3px 0 var(--retro-red), 6px 0 var(--retro-red), 12px 0 var(--retro-red), 15px 0 var(--retro-red),
+                0 3px var(--retro-red), 3px 3px var(--retro-red), 6px 3px var(--retro-red), 9px 3px var(--retro-red), 12px 3px var(--retro-red), 15px 3px var(--retro-red), 18px 3px var(--retro-red),
+                0 6px var(--retro-red), 3px 6px var(--retro-red), 6px 6px var(--retro-red), 9px 6px var(--retro-red), 12px 6px var(--retro-red), 15px 6px var(--retro-red), 18px 6px var(--retro-red),
+                3px 9px var(--retro-red), 6px 9px var(--retro-red), 9px 9px var(--retro-red), 12px 9px var(--retro-red), 15px 9px var(--retro-red),
+                6px 12px var(--retro-red), 9px 12px var(--retro-red), 12px 12px var(--retro-red),
+                9px 15px var(--retro-red);
+        }
+
+        .vote-count { 
+            position: absolute;
+            font-family: 'Pacifico', cursive;
+            font-size: 0.85em; 
+            color: #fff;
+            top: 6px; left: 19px; 
+            pointer-events: none;
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.3);
+        }
+
+        .vote-btn:hover { transform: scale(1.1); }
+
+        /* Card Layout */
+        .chef-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
+        .chef-card { background: #fff; border-radius: 8px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; border: 1px solid #eee; position: relative; }
+        .chef-card.black-theme { background: #1a1a1a; color: #fff; border-color: #333; }
+        
+        .chef-photo { width: 80px; height: 80px; border-radius: 50%; margin: 15px auto 10px; object-fit: cover; border: 2px solid #eee; background: #ddd; }
+        .black-theme .chef-photo { border-color: #444; }
+        
+        .cuisine-tag { font-size: 0.7em; font-weight: bold; color: #0066cc; text-transform: uppercase; margin-bottom: 8px; display: block; }
+        .black-theme .cuisine-tag { color: #4dabff; }
+        
+        .chef-name { font-size: 1.1em; margin: 5px 0 2px 0; }
+        .chef-alias { color: #777; font-size: 0.75em; margin-bottom: 10px; display: block; font-style: italic; }
+        .chef-info { font-size: 0.8em; margin-bottom: 4px; text-align: left; padding: 5px 8px; background: #f8f9fa; border-radius: 4px; color: #555; min-height: 1.2em; }
+        .black-theme .chef-info { background: #2a2a2a; color: #ccc; }
+        
+        .badge { font-size: 0.6em; font-weight: bold; padding: 2px 6px; border-radius: 8px; margin-bottom: 10px; display: inline-block; }
+        .badge.white { background: #eee; color: #333; }
+        .badge.black { background: #fff; color: #000; }
+        
+        .ig-link { margin-top: auto; text-decoration: none; color: #fff; background: var(--ig-gradient); padding: 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
+        .ig-link.empty { background: #ccc; pointer-events: none; opacity: 0.6; }
+    </style>
+</head>
+<body>
+    <nav><a href="index.html">&larr; Back to Recipes</a></nav>
+    <header><h1>Season 2 Full Chef Roster</h1></header>
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-bar" placeholder="Search masters..." onkeyup="searchChefs()">
+        </div>
+        <div id="directory-grid" class="chef-grid"></div>
+    </div>
+
+    <script>
+        const directoryData = [
+            { name: "Lee Jun", alias: "Michelin Star Innovator", spoon: "white", cuisine: "Modern Korean/Western", res: "Soigné", loc: "Seoul, South Korea", ig: "https://www.instagram.com/soigneseoul/", img: "leejun.jpg", votes: 0 },
+            { name: "Choi Kang-rok", alias: "Hidden White Spoon", spoon: "white", cuisine: "Japanese", res: "NEO", loc: "Seoul, South Korea", ig: "https://www.instagram.com/roi_choi/", img: "choi.jpg", votes: 0 },
+            { name: "Hou Deok-juk", alias: "Chinese Cuisine Master", spoon: "white", cuisine: "Chinese", res: "Haobin", loc: "Seoul, South Korea", ig: "https://www.instagram.com/hou.4784/", img: "hou.jpg", votes: 0 },
+            { name: "Son Jong-won", alias: "Michelin Dual Master", spoon: "white", cuisine: "Western/Contemporary", res: "L'Amant Secret", loc: "Seoul, South Korea", ig: "https://www.instagram.com/jw.sson/", img: "son.jpg", votes: 0 },
+            { name: "Jung Ho-young", alias: "Udon Legend", spoon: "white", cuisine: "Japanese/Udon", res: "Udon Kaden", loc: "Seoul, South Korea", ig: "https://www.instagram.com/jung_hoyoung_caden_/", img: "jung.jpg", votes: 0 },
+            { name: "Sam Kim", alias: "Italian Maestro", spoon: "white", cuisine: "Italian", res: "Osteria Sam Kim", loc: "Seoul, South Korea", ig: "https://www.instagram.com/chefsamkim/", img: "samkim.jpg", votes: 0 },
+            { name: "Im Seong-keun", alias: "Korean Food Battle Winner", spoon: "white", cuisine: "Traditional Korean", res: "Jin Galbi", loc: "Seoul, South Korea", ig: "https://www.instagram.com/imchef00/", img: "im.jpg", votes: 0 },
+            { name: "Venerable Sunjae", alias: "Temple Food Master", spoon: "white", cuisine: "Temple Food", res: "Temple Food Center", loc: "South Korea", ig: "https://www.instagram.com/sunjae_templefood/", img: "sunjae.jpg", votes: 0 },
+            { name: "Park Hyo-nam", alias: "Master of the Republic", spoon: "white", cuisine: "Classic French", res: "", loc: "Seoul, South Korea", ig: "", img: "park_hyonam.jpg", votes: 0 },
+            { name: "Jennie Walldén", alias: "Nordic Winner", spoon: "white", cuisine: "Korean-Nordic Fusion", res: "Laxne", loc: "Sweden", ig: "https://www.instagram.com/jenniewallden/", img: "jennie.jpg", votes: 0 },
+            { name: "Kim Do-yun", alias: "Ingredient Master", spoon: "white", cuisine: "Traditional Fine Dining", res: "Yun Seoul", loc: "Seoul, South Korea", ig: "https://www.instagram.com/un_doyun/", img: "kim_doyun.jpg", votes: 0 },
+            { name: "Raymon Kim", alias: "Star Chef", spoon: "white", cuisine: "Western/Steakhouse", res: "Mid-Century", loc: "Seoul, South Korea", ig: "https://www.instagram.com/raymonkim/", img: "raymon.jpg", votes: 0 },
+            { name: "Lee Ha-sung", alias: "Culinary Monster", spoon: "black", cuisine: "Modern Korean", res: "Oyatte", loc: "New York, USA", ig: "https://www.instagram.com/hasunglee/", img: "monster.jpg", votes: 0 },
+            { name: "Yoon Nam-no", alias: "Cooking Maniac", spoon: "black", cuisine: "French-Asian Fusion", res: "Deepin", loc: "Seoul, South Korea", ig: "https://www.instagram.com/ynoon_namno/", img: "maniac.jpg", votes: 0 },
+            { name: "Nara Yun", alias: "Brewmaster Yun", spoon: "black", cuisine: "Korean Gastropub", res: "Yunjudang", loc: "Seoul, South Korea", ig: "https://www.instagram.com/yun_nara_/", img: "yun.jpg", votes: 0 },
+            { name: "Lee Chan-yang", alias: "Twisted Genius", spoon: "black", cuisine: "Contemporary", res: "Channel Hyundaicard", loc: "Seoul, South Korea", ig: "https://www.instagram.com/chan_yanggg/", img: "genius.jpg", votes: 0 },
+            { name: "David Lee", alias: "Meat Gangster", spoon: "black", cuisine: "Butchery/Steak", res: "Guunmong", loc: "Seoul, South Korea", ig: "https://www.instagram.com/meatgangster/", img: "meat.jpg", votes: 0 },
+            { name: "Cho Kwang-ho", alias: "Comic Book Chef", spoon: "black", cuisine: "Szechuan/Chinese", res: "Cho Kwang 201", loc: "Seoul, South Korea", ig: "https://www.instagram.com/cho__kwang/", img: "comic.jpg", votes: 0 },
+            { name: "Yoo Yong-wook", alias: "Barbecue Lab Director", spoon: "black", cuisine: "BBQ/Smoked Meat", res: "Yoo Yong-wook BBQ Lab", loc: "Seoul, South Korea", ig: "https://www.instagram.com/v_v_yo_v/", img: "bbq.jpg", votes: 0 },
+            { name: "Kim Si-hyeon", alias: "Side Dish Chef", spoon: "black", cuisine: "Modern Banchan", res: "Seany Kitchen", loc: "Seoul, South Korea", ig: "https://www.instagram.com/seanykitchen/", img: "sidedish.jpg", votes: 0 }
+        ];
+
+        // Ensure votes are loaded from storage BEFORE rendering
+        function initVotes() {
+            directoryData.forEach(chef => {
+                if (localStorage.getItem('voted_' + chef.name)) {
+                    chef.votes = 1;
+                }
+            });
+        }
+
+        function toggleVote(chefName) {
+            const hasVoted = localStorage.getItem('voted_' + chefName);
+            const chef = directoryData.find(c => c.name === chefName);
+            if (hasVoted) {
+                chef.votes = 0;
+                localStorage.removeItem('voted_' + chefName);
+            } else {
+                chef.votes = 1;
+                localStorage.setItem('voted_' + chefName, 'true');
+            }
+            render();
+        }
+
+        function render() {
+            const grid = document.getElementById('directory-grid');
+            
+            // Re-sort: Hearts (1) first, then A-Z
+            const sortedData = [...directoryData].sort((a, b) => {
+                if (b.votes !== a.votes) return b.votes - a.votes;
+                return a.name.localeCompare(b.name);
+            });
+
+            grid.innerHTML = sortedData.map(c => {
+                const voted = localStorage.getItem('voted_' + c.name);
+                return `
+                    <div class="chef-card ${c.spoon === 'black' ? 'black-theme' : ''}">
+                        <div class="vote-container">
+                            <button class="vote-btn ${voted ? 'voted' : ''}" onclick="toggleVote('${c.name}')">
+                                <div class="pixel-heart"></div>
+                                <span class="vote-count">${voted ? '1' : ''}</span>
+                            </button>
+                        </div>
+                        <img src="images/${c.img}" class="chef-photo" alt="${c.name}">
+                        <span class="cuisine-tag">${c.cuisine}</span>
+                        <h2 class="chef-name">${c.name}</h2>
+                        <span class="chef-alias">"${c.alias}"</span>
+                        <div><span class="badge ${c.spoon}">${c.spoon.toUpperCase()} SPOON</span></div>
+                        <div class="chef-info"><strong>Res:</strong> ${c.res || '---'}</div>
+                        <div class="chef-info"><strong>Loc:</strong> ${c.loc || '---'}</div>
+                        ${c.ig ? `<a href="${c.ig}" target="_blank" class="ig-link">Instagram</a>` : `<span class="ig-link empty">No Instagram</span>`}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        initVotes();
+        render();
+
+        function searchChefs() {
+            let val = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.chef-card').forEach(card => {
+                card.style.display = card.textContent.toLowerCase().includes(val) ? "flex" : "none";
+            });
+        }
+    </script>
+</body>
+</html>
